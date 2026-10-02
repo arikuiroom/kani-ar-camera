@@ -1,0 +1,55 @@
+name: Build Kani Guitar USDZ
+
+on:
+  push:
+    branches: [beta]
+    paths:
+      - ".github/workflows/build-usdz.yml"
+      - "scripts/convert_to_usdz.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-usdz:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout beta
+        uses: actions/checkout@v4
+        with:
+          ref: beta
+
+      - name: Install Blender
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y blender
+          blender --version
+
+      - name: Download source model and textures
+        run: |
+          mkdir -p build_src assets
+          curl -fL "https://raw.githubusercontent.com/arikuiroom/kani-camera/main/models/CrabGuitarKA23_High.fbx" -o build_src/CrabGuitarKA23_High.fbx
+          curl -fL "https://raw.githubusercontent.com/arikuiroom/kani-camera/main/textures/KA23_Red_Albedo.png" -o build_src/KA23_Red_Albedo.png
+          curl -fL "https://raw.githubusercontent.com/arikuiroom/kani-camera/main/textures/KA23_Solid_Metallic.png" -o build_src/KA23_Solid_Metallic.png
+          curl -fL "https://raw.githubusercontent.com/arikuiroom/kani-camera/main/textures/KA23_Solid_Roughness.png" -o build_src/KA23_Solid_Roughness.png
+
+      - name: Convert FBX to USDZ
+        run: blender --background --python scripts/convert_to_usdz.py
+
+      - name: Verify output
+        run: |
+          test -s assets/kani-guitar-red.usdz
+          ls -lh assets/kani-guitar-red.usdz
+
+      - name: Commit generated USDZ
+        run: |
+          if git diff --quiet -- assets/kani-guitar-red.usdz && git ls-files --error-unmatch assets/kani-guitar-red.usdz >/dev/null 2>&1; then
+            echo "USDZ unchanged"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/kani-guitar-red.usdz
+          git commit -m "build: generate Kani Guitar USDZ [skip ci]"
+          git push origin HEAD:beta
