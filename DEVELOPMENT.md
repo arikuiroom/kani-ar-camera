@@ -118,3 +118,23 @@ AR Quick LookをそのままARレンダリング基盤として使い、カニ�
 5. 撮影画像がiPhoneの「写真」アプリに保存される
 6. ARを閉じるとWebページへ戻れる
 7. 戻った後に撮影結果確認の案内が表示される
+
+
+## Beta v0.4.2 診断結果
+
+2026-10-03 / iPhone Safari
+
+- iPhone再起動前: Quick LookのARタブがグレーアウト
+- iPhone再起動後: Apple公式モデルのAR表示 OK
+- iPhone再起動後: カニギターUSDZのAR表示 OK
+
+結論:
+- カニギターUSDZ自体は正常
+- Web側のARリンクも正常
+- 症状はiPhone側のQuick Look / ARセッションの一時的不調と判断
+- 再発時の暫定対処: Safari終了 → 改善しなければiPhone再起動
+
+## Beta v0.4.3
+
+診断用Apple公式モデルボタンを削除し、カニギターARカメラの通常導線へ戻す。
+ARタブがグレーアウトした場合の再起動案内をページ内に追加。
