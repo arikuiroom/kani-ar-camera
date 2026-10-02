@@ -70,3 +70,30 @@ Beta v0.1.1 を最小ARプロトタイプの実機検証成功版とする。
 - 移動・回転・拡大縮小: OK
 
 Beta v0.2.0 を自前USDZ配信の実機検証成功版とする。
+
+
+## Beta v0.3.0
+
+### 目的
+既存の `kani-camera` で使用している実物のKA-23カニギターFBXとPBRテクスチャをUSDZへ変換し、iPhone SafariのAR Quick Lookで実空間に配置する。
+
+### 使用データ
+- FBX: `CrabGuitarKA23_High.fbx`
+- Albedo: `KA23_Red_Albedo.png`
+- Metallic: `KA23_Solid_Metallic.png`
+- Roughness: `KA23_Solid_Roughness.png`
+- AR用生成物: `assets/kani-guitar-red.usdz`
+- 最大寸法: 約0.80m
+
+### 変換
+GitHub Actions上のBlender 4.5 LTSで自動変換する。
+`scripts/convert_to_usdz.py` を更新するとUSDZを再生成できる。
+
+### 実機確認項目
+1. ページに `Beta v0.3.0` と表示される
+2. ARを開始すると赤いカニギターが表示される
+3. 形状が既存モデルと一致している
+4. テクスチャの向き・色が正しい
+5. 床に自然な向きで接地する
+6. 実寸感が適切か確認する
+7. 移動・回転・拡大縮小ができる
