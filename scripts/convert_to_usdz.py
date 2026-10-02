@@ -100,28 +100,14 @@ print("Final bounds meters:", tuple(mins2), tuple(maxs2), "size:", tuple(maxs2 -
 
 os.makedirs(os.path.dirname(OUT), exist_ok=True)
 
-# Blender packages textures automatically when output has .usdz extension.
-props = bpy.ops.wm.usd_export.get_rna_type().properties.keys()
-kwargs = {
-    "filepath": OUT,
-    "export_materials": True,
-    "export_uvmaps": True,
-    "export_normals": True,
-    "relative_paths": True,
-}
-if "export_textures" in props:
-    kwargs["export_textures"] = True
-if "export_textures_mode" in props:
-    kwargs["export_textures_mode"] = "NEW"
-if "overwrite_textures" in props:
-    kwargs["overwrite_textures"] = True
-if "usdz_downscale_size" in props:
-    kwargs["usdz_downscale_size"] = "1024"
-if "convert_scene_units" in props:
-    kwargs["convert_scene_units"] = "METERS"
-if "meters_per_unit" in props:
-    kwargs["meters_per_unit"] = 1.0
-
-result = bpy.ops.wm.usd_export(**kwargs)
+# Blender packages dependencies when the output extension is .usdz.
+# Keep arguments conservative for Blender 4.0 compatibility.
+result = bpy.ops.wm.usd_export(
+    filepath=OUT,
+    export_materials=True,
+    export_uvmaps=True,
+    export_normals=True,
+    relative_paths=True,
+)
 print("USDZ export result:", result)
 print("Wrote:", OUT, os.path.getsize(OUT), "bytes")
