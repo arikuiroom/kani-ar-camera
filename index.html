@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#111111" />
-  <title>カニギターARカメラ Beta v0.3.0</title>
+  <title>カニギターARカメラ Beta v0.4.0</title>
   <style>
     :root { color-scheme: dark; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; }
     * { box-sizing: border-box; }
@@ -39,14 +39,14 @@
 <body>
   <main>
     <h1>カニギターARカメラ</h1>
-    <div class="version">Beta v0.3.0</div>
+    <div class="version">Beta v0.4.0</div>
 
     <section class="card">
       <div class="shape" aria-hidden="true">◆</div>
       <p>
         最小ARテストです。<br>
         iPhoneでボタンを押し、周囲を映して床を認識させ、
-        赤いカニギターを実空間の床に配置できるか確認します。
+        赤いカニギターを実空間に置き、構図を決めて写真を撮影するテストです。
       </p>
 
       <a
@@ -61,10 +61,17 @@
           height="1"
           style="position:absolute;opacity:0;pointer-events:none"
         />
-        ARを開始
+        ARカメラを起動
       </a>
 
       <div id="support"></div>
+      <div class="note" id="shoot-guide">
+        AR画面でカニギターを配置したら、Quick Lookの撮影機能で写真を撮ってください。<br>
+        撮影後はARを閉じてこの画面へ戻ります。
+      </div>
+      <div class="note" id="return-note" hidden style="color:#30d158;">
+        AR画面から戻りました。撮影した写真を「写真」アプリで確認してください。
+      </div>
       <div class="note">
         既存のカニギター3DモデルをAR用USDZに変換して表示します。<br>
         Safariから開いてください。
@@ -86,6 +93,21 @@
       support.textContent = 'AR Quick Look対応環境です。';
       support.style.color = '#30d158';
     }
+    let arOpened = false;
+    const arLink = document.getElementById('ar-link');
+    const returnNote = document.getElementById('return-note');
+
+    arLink.addEventListener('click', () => {
+      arOpened = true;
+      returnNote.hidden = true;
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && arOpened) {
+        returnNote.hidden = false;
+      }
+    });
+
   </script>
 </body>
 </html>
