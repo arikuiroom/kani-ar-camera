@@ -25,3 +25,16 @@ iPhone SafariからApple AR Quick Lookを起動し、ARKitによる実空間認�
 - beta: 実機確認版
 
 Betaで確認後、問題がなければmainへ反映する。
+
+
+## 実機確認結果
+
+2026-10-02 / iPhone Safari
+
+- AR Quick Look 起動: OK
+- 実空間の床への3Dモデル配置: OK
+- モデル移動: OK
+- モデル回転: OK
+- ピンチ拡大縮小: OK
+
+Beta v0.1.1 を最小ARプロトタイプの実機検証成功版とする。
