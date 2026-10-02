@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#111111" />
-  <title>カニギターARカメラ Beta v0.4.2</title>
+  <title>カニギターARカメラ Beta v0.4.3</title>
   <style>
     :root { color-scheme: dark; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; }
     * { box-sizing: border-box; }
@@ -39,7 +39,7 @@
 <body>
   <main>
     <h1>カニギターARカメラ</h1>
-    <div class="version">Beta v0.4.2</div>
+    <div class="version">Beta v0.4.3</div>
 
     <section class="card">
       <div class="shape" aria-hidden="true">◆</div>
@@ -49,42 +49,25 @@
         赤いカニギターを実空間に置き、構図を決めて写真を撮影するテストです。
       </p>
 
-      <div style="display:grid;gap:12px;">
-        <a
-          rel="ar"
-          href="https://developer.apple.com/quick-look-gallery/models/rover/LunarRover_English.reality"
-          id="apple-ar-link"
-        >
-          <img
-            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
-            alt=""
-            width="1"
-            height="1"
-            style="position:absolute;opacity:0;pointer-events:none"
-          />
-          ① Apple公式モデルでARテスト
-        </a>
-
-        <a
-          rel="ar"
-          href="./assets/kani-guitar-red-v041.usdz"
-          id="ar-link"
-        >
-          <img
-            src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
-            alt=""
-            width="1"
-            height="1"
-            style="position:absolute;opacity:0;pointer-events:none"
-          />
-          ② カニギターでARテスト
-        </a>
-      </div>
+      <a
+        rel="ar"
+        href="./assets/kani-guitar-red-v041.usdz"
+        id="ar-link"
+      >
+        <img
+          src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+          alt=""
+          width="1"
+          height="1"
+          style="position:absolute;opacity:0;pointer-events:none"
+        />
+        ARカメラを起動
+      </a>
 
       <div id="support"></div>
       <div class="note" id="shoot-guide">
-        切り分けテストです。まず①Apple公式モデルを開き、ARタブが選べるか確認してください。<br>
-        次に②カニギターでも同じ確認をします。
+        カニギターを配置して構図を決め、Quick Lookの撮影機能で写真を撮ってください。<br>
+        ARタブがグレーになる場合は、Safariを閉じても直らなければiPhoneを再起動してください。
       </div>
       <div class="note" id="return-note" hidden style="color:#30d158;">
         AR画面から戻りました。撮影した写真を「写真」アプリで確認してください。
@@ -112,14 +95,11 @@
     }
     let arOpened = false;
     const arLink = document.getElementById('ar-link');
-    const appleArLink = document.getElementById('apple-ar-link');
     const returnNote = document.getElementById('return-note');
 
-    [appleArLink, arLink].forEach((link) => {
-      link.addEventListener('click', () => {
-        arOpened = true;
-        returnNote.hidden = true;
-      });
+    arLink.addEventListener('click', () => {
+      arOpened = true;
+      returnNote.hidden = true;
     });
 
     document.addEventListener('visibilitychange', () => {
