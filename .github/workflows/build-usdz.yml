@@ -20,11 +20,13 @@ jobs:
         with:
           ref: beta
 
-      - name: Install Blender
+      - name: Install official Blender 4.5 LTS
         run: |
-          sudo apt-get update
-          sudo apt-get install -y blender python3-numpy
-          blender --version
+          BLENDER_VERSION="4.5.14"
+          curl -fL "https://download.blender.org/release/Blender4.5/blender-${BLENDER_VERSION}-linux-x64.tar.xz" -o blender.tar.xz
+          tar -xf blender.tar.xz
+          mv "blender-${BLENDER_VERSION}-linux-x64" blender-dist
+          ./blender-dist/blender --version
 
       - name: Download source model and textures
         run: |
@@ -35,7 +37,7 @@ jobs:
           curl -fL "https://raw.githubusercontent.com/arikuiroom/kani-camera/main/textures/KA23_Solid_Roughness.png" -o build_src/KA23_Solid_Roughness.png
 
       - name: Convert FBX to USDZ
-        run: blender --background --python scripts/convert_to_usdz.py
+        run: ./blender-dist/blender --background --python scripts/convert_to_usdz.py
 
       - name: Verify output
         run: |
