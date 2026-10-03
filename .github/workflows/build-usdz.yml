@@ -42,16 +42,20 @@ jobs:
       - name: Verify output
         run: |
           test -s assets/kani-guitar-red.usdz
+          test -s assets/kani-guitar-red-idle-test.usdz
           ls -lh assets/kani-guitar-red.usdz
+          ls -lh assets/kani-guitar-red-idle-test.usdz
 
       - name: Commit generated USDZ
         run: |
-          if git diff --quiet -- assets/kani-guitar-red.usdz && git ls-files --error-unmatch assets/kani-guitar-red.usdz >/dev/null 2>&1; then
-            echo "USDZ unchanged"
+          if git diff --quiet -- assets/kani-guitar-red.usdz assets/kani-guitar-red-idle-test.usdz \
+             && git ls-files --error-unmatch assets/kani-guitar-red.usdz >/dev/null 2>&1 \
+             && git ls-files --error-unmatch assets/kani-guitar-red-idle-test.usdz >/dev/null 2>&1; then
+            echo "USDZ files unchanged"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/kani-guitar-red.usdz
+          git add assets/kani-guitar-red.usdz assets/kani-guitar-red-idle-test.usdz
           git commit -m "build: generate Kani Guitar USDZ [skip ci]"
           git push origin HEAD:beta
