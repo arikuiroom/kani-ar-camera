@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#111111" />
-  <title>カニギターARカメラ Beta v0.4.4</title>
+  <title>カニギターARカメラ Beta v0.5.0</title>
   <style>
     :root { color-scheme: dark; font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; }
     * { box-sizing: border-box; }
@@ -39,14 +39,14 @@
 <body>
   <main>
     <h1>カニギターARカメラ</h1>
-    <div class="version">Beta v0.4.4</div>
+    <div class="version">Beta v0.5.0</div>
 
     <section class="card">
       <div class="shape" aria-hidden="true">◆</div>
       <p>
-        最小ARテストです。<br>
-        iPhoneでボタンを押し、周囲を映して床を認識させ、
-        赤いカニギターを実空間に置き、構図を決めて写真を撮影するテストです。
+        姿勢・高さの操作テストです。<br>
+        赤いカニギターを床に置いたあと、Quick Look標準操作だけで
+        どこまで自由にポーズを作れるか確認します。
       </p>
 
       <a
@@ -61,13 +61,17 @@
           height="1"
           style="position:absolute;opacity:0;pointer-events:none"
         />
-        ARカメラを起動
+        姿勢・高さテストを開始
       </a>
 
       <div id="support"></div>
       <div class="note" id="shoot-guide">
-        カニギターを配置して構図を決め、写真を1枚撮影してください。<br>
-        撮影後はAR画面を閉じ、もう1枚撮るときは再度「ARカメラを起動」してください。
+        <strong>今回の確認項目</strong><br>
+        ① 2本指で上へスワイプして床から浮かせられるか<br>
+        ② 浮かせたあと高さを下げられるか<br>
+        ③ 正面を向いたまま左右へ傾けられるか<br>
+        ④ 仰向け・うつ伏せまで倒せるか<br>
+        ⑤ その状態のまま写真を撮れるか
       </div>
       <div class="note" id="return-note" hidden style="color:#30d158;">
         撮影おつかれさまでした。写真アプリで確認できます。<br>もう1枚撮る場合は、再度ARカメラを起動してください。
