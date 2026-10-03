@@ -5,6 +5,7 @@ from mathutils import Vector
 ROOT = os.environ.get("GITHUB_WORKSPACE", os.getcwd())
 SRC = os.path.join(ROOT, "build_src")
 OUT = os.path.join(ROOT, "assets", "kani-guitar-red.usdz")
+OUT_IDLE = os.path.join(ROOT, "assets", "kani-guitar-red-idle-test.usdz")
 FBX = os.path.join(SRC, "CrabGuitarKA23_High.fbx")
 ALBEDO = os.path.join(SRC, "KA23_Red_Albedo.png")
 METALLIC = os.path.join(SRC, "KA23_Solid_Metallic.png")
@@ -111,3 +112,54 @@ result = bpy.ops.wm.usd_export(
 )
 print("USDZ export result:", result)
 print("Wrote:", OUT, os.path.getsize(OUT), "bytes")
+
+# ---------------------------------------------------------------------------
+# Animation capability test
+# Add a subtle 3-second root motion to the same Kani Guitar.
+# This is NOT the final character motion. It only verifies that AR Quick Look
+# preserves and plays animation exported from Blender/USDZ.
+# ---------------------------------------------------------------------------
+scene = bpy.context.scene
+scene.render.fps = 30
+scene.frame_start = 1
+scene.frame_end = 91
+
+base_location = root.location.copy()
+base_rotation = root.rotation_euler.copy()
+
+poses = [
+    (1,  0.000,  0.0,  0.0),
+    (23, 0.010,  1.8, -1.2),
+    (46, 0.020, -1.6,  1.4),
+    (68, 0.010,  1.2,  0.8),
+    (91, 0.000,  0.0,  0.0),
+]
+
+for frame, dz, rx_deg, ry_deg in poses:
+    scene.frame_set(frame)
+    root.location = base_location.copy()
+    root.location.z += dz
+    root.rotation_euler = base_rotation.copy()
+    root.rotation_euler.x += rx_deg * 3.141592653589793 / 180.0
+    root.rotation_euler.y += ry_deg * 3.141592653589793 / 180.0
+    root.keyframe_insert(data_path="location", frame=frame)
+    root.keyframe_insert(data_path="rotation_euler", frame=frame)
+
+# Smooth the test motion.
+if root.animation_data and root.animation_data.action:
+    for fcurve in root.animation_data.action.fcurves:
+        for key in fcurve.keyframe_points:
+            key.interpolation = "BEZIER"
+
+scene.frame_set(1)
+
+result_idle = bpy.ops.wm.usd_export(
+    filepath=OUT_IDLE,
+    export_materials=True,
+    export_uvmaps=True,
+    export_normals=True,
+    relative_paths=True,
+    export_animation=True,
+)
+print("Animated USDZ export result:", result_idle)
+print("Wrote:", OUT_IDLE, os.path.getsize(OUT_IDLE), "bytes")
